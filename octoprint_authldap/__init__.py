@@ -28,7 +28,7 @@ class LDAPUserManager(FilebasedUserManager, octoprint.plugin.SettingsPlugin, oct
 					and settings().get(["plugins", "authldap", "ldap_query"]) is not None:
 				connection = ldap.initialize(settings().get(["plugins", "authldap", "ldap_uri"]))
 				connection.set_option(ldap.OPT_REFERRALS, 0)
-				if settings().get(["plugins", "authldap", "ldap_method"]) == 'TLS':
+				if settings().get(["plugins", "authldap", "ldap_method"]) == 'SECURE':
 					ldap_verifypeer = settings().get(
 						["plugins", "authldap", "ldap_tls_reqcert"])
 					verifypeer = ldap.OPT_X_TLS_HARD
@@ -55,10 +55,10 @@ class LDAPUserManager(FilebasedUserManager, octoprint.plugin.SettingsPlugin, oct
 					return
 				except:
 					pass
-			settings().remove(["accessControl", "userManager"])
-			settings().remove(["plugins", "authldap", "active"])
-			settings().save()
-			os.system('kill $PPID')
+			#settings().remove(["accessControl", "userManager"])
+			#settings().remove(["plugins", "authldap", "active"])
+			#settings().save()
+			#os.system('kill $PPID')
 
 	def findUser(self, userid=None, apikey=None, session=None):
 		user = UserManager.findUser(self, userid=userid, session=session)
@@ -158,7 +158,7 @@ class LDAPUserManager(FilebasedUserManager, octoprint.plugin.SettingsPlugin, oct
 		connection.set_option(ldap.OPT_REFERRALS,0)
 		self._logger.debug("LDAP initialized")
 
-		if settings().get(["plugins", "authldap", "ldap_method"]) == 'TLS':
+		if settings().get(["plugins", "authldap", "ldap_method"]) == 'SECURE':
 			self._logger.debug("LDAP is using TLS, setting ldap options...")
 			ldap_verifypeer = settings().get(
 				["plugins", "authldap", "ldap_tls_reqcert"])
@@ -201,13 +201,13 @@ class LDAPUserManager(FilebasedUserManager, octoprint.plugin.SettingsPlugin, oct
 
 				# version check: github repository
 				type="github_release",
-				user="gillg",
+				user="bveina",
 				repo="OctoPrint-LDAP",
 				current=self._plugin_version,
 
 				# update method: pip
 				pip=("https://github.com"
-					 "/gillg/OctoPrint-LDAP/archive/{target_version}.zip")
+					 "/bveina/OctoPrint-LDAP/archive/{target_version}.zip")
 			)
 		)
 
